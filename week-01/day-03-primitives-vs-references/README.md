@@ -20,23 +20,32 @@ bigint
 
 ---
 
-## 📦 Primitives — Stored by Value
+## 📦 Primitives — Copied by Value
 
-Assigning a primitive copies the **actual value**. Variables are fully independent.
+When you assign a primitive, JS creates a **completely separate copy** of that value. From that point on, the two variables have **nothing to do with each other** — they own their values independently.
 
 ```js
 let a = 10;
-let b = a;  // b gets a COPY of 10
+let b = a;  // b gets its OWN copy of 10
 
 b = 99;
 
-console.log(a); // 10 — unchanged ✅
+console.log(a); // 10 — untouched ✅
 console.log(b); // 99
 ```
 
+**What's happening in memory:**
+```
+After let b = a:          After b = 99:
+a → [ 10 ]                a → [ 10 ]   ← completely unaffected
+b → [ 10 ]  own copy      b → [ 99 ]   ← only this changed
+```
+
+> "Copied by value" simply means each variable gets **its own independent value**. Change one — the other doesn't care.
+
 ---
 
-## 🔗 Reference Types — Stored by Reference
+## 🔗 Reference Types — Copied by Address
 
 Assigning an object/array copies the **memory address**, not the value.
 
@@ -159,10 +168,37 @@ console.log(obj1.address.city); // "Delhi" ✅ — fully independent
 
 ---
 
+## 🍳 Analogy — The Simplest Way to Remember
+
+> **Primitive** = Photocopy. You get your own page. Write on yours — mine stays the same.
+
+> **Object** = Google Doc. We both have the link to the **same** document. You edit it — I see the change.
+
+---
+
+## 🧠 Wait — Are Primitives Really on the Stack?
+
+The common explanation is "primitives on stack, objects on heap." That's a useful mental model but not the full truth.
+
+In V8 (Chrome/Node's JS engine):
+
+| Primitive | Where it actually lives |
+|:--|:--|
+| Small integers (e.g. `5`, `42`) | Inline on the stack as **Smi** (Small Integer) |
+| Decimals (e.g. `3.14`) | Heap — wrapped as a **HeapNumber** object |
+| Strings (e.g. `"hello"`) | Always on the **heap** (V8 string area) |
+| `true`, `false`, `null`, `undefined` | Pre-created **singleton** values |
+
+> V8 interns strings — if you use `"hello"` 100 times, it stores it once in the heap and reuses the reference. That's why `"hello" === "hello"` is `true`.
+
+**The key point:** regardless of where primitives physically live, they always **behave** as independent copies. That's what "copied by value" means — it's about behaviour, not physical location.
+
+---
+
 ## ✅ Takeaways
 
-- **Primitives** are copied by value — variables are fully independent
-- **Reference types** are copied by address — variables share the same object
+- **Primitives** are copied by value — each variable owns its own independent copy
+- **Reference types** are copied by address — variables share the same object in memory
 - `{} === {}` is `false` — two different addresses, even if contents match
 - Functions receive objects **by reference** — mutating inside affects the original
 - Spread `{ ...obj }` is a **shallow copy** — nested objects are still shared
