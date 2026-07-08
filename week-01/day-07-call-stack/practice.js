@@ -4,7 +4,6 @@
 // Draw it on paper first, then run to verify.
 // ============================================================
 
-
 // ----------------------------------------------------------
 // Exercise 1 — Trace the stack
 // Write down what's on the stack at each numbered point
@@ -39,7 +38,6 @@ inside b
 back in a
 end
 */
-
 
 // ----------------------------------------------------------
 // Exercise 2 — Nested calls, deeper stack
@@ -82,7 +80,6 @@ Stack at deepest point:
 └──────────┘
 */
 
-
 // ----------------------------------------------------------
 // Exercise 3 — Execution context & variables
 // Each function gets its own execution context
@@ -92,20 +89,20 @@ console.log("\n--- Exercise 3 ---");
 let x = "global";
 
 function foo() {
-  let x = "foo";        // own execution context, own x
-  console.log(x);       // which x?
+  let x = "foo"; // own execution context, own x
+  console.log(x); // which x?
   bar();
-  console.log(x);       // still foo's x?
+  console.log(x); // still foo's x?
 }
 
 function bar() {
-  let x = "bar";        // own execution context, own x
-  console.log(x);       // which x?
+  let x = "bar"; // own execution context, own x
+  console.log(x); // which x?
 }
 
-console.log(x);  // ?
+console.log(x); // ?
 foo();
-console.log(x);  // ?
+console.log(x); // ?
 
 // Expected:
 // global
@@ -113,7 +110,6 @@ console.log(x);  // ?
 // bar
 // foo
 // global
-
 
 // ----------------------------------------------------------
 // Exercise 4 — Stack overflow
@@ -140,7 +136,6 @@ function countDownSafe(n) {
 countDownSafe(5);
 // Expected: 5, 4, 3, 2, 1, 0
 
-
 // ----------------------------------------------------------
 // Exercise 5 — Stack + Closure connection
 // How does the closed-over variable survive?
@@ -152,7 +147,7 @@ function makeAdder(x) {
   // leaves the stack. But x lives on in the heap
   // because the returned function references it.
 
-  return function(y) {
+  return function (y) {
     return x + y; // x is in the heap via closure
   };
 }
@@ -161,7 +156,7 @@ const add10 = makeAdder(10);
 // makeAdder(10) is now OFF the stack
 // but x=10 is alive in the heap
 
-console.log(add10(5));  // 15 — x still accessible
+console.log(add10(5)); // 15 — x still accessible
 console.log(add10(20)); // 30 — same x
 
 /*
@@ -174,7 +169,6 @@ Call Stack:         Heap:
 └──────────┘       └──────────────────────────┘
 */
 
-
 // ----------------------------------------------------------
 // Challenge 1 — Implement safe recursion
 // Write factorial(n) using recursion with a base case
@@ -183,13 +177,16 @@ Call Stack:         Heap:
 console.log("\n--- Challenge 1 ---");
 
 function factorial(n) {
+  while (n !== 0) {
+    n = n * (n - 1);
+    n = n - 1;
+  }
   // YOUR CODE HERE
 }
 
-console.log(factorial(5));  // 120
-console.log(factorial(0));  // 1  (0! = 1 by definition)
-console.log(factorial(1));  // 1
-
+console.log(factorial(5)); // 120
+console.log(factorial(0)); // 1  (0! = 1 by definition)
+console.log(factorial(1)); // 1
 
 // ----------------------------------------------------------
 // Challenge 2 — Trace this manually before running
@@ -230,7 +227,6 @@ Expected output:
 20   ← middle()'s own val
 10   ← outer()'s own val
 */
-
 
 // ----------------------------------------------------------
 // Solutions
